@@ -1,5 +1,6 @@
 package br.com.caelum.jdbc.teste;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import br.com.caelum.jdbc.Contato;
@@ -16,7 +17,9 @@ public class TestaLista {
 			System.out.println("Nome: " + contatoAtual.getNome());
 			System.out.println("Email: " + contatoAtual.getEmail());
 			System.out.println("Endereco: " + contatoAtual.getEndereco());
-			System.out.println("Data de Nascimento: " + contatoAtual.getDataNascimento().getTime());
+			SimpleDateFormat formatoData = new SimpleDateFormat("DD/MM/YYYY");
+
+			System.out.println("Data de Nascimento: " + formatoData.format(contatoAtual.getDataNascimento().getTime()));
 		}
 
 	}

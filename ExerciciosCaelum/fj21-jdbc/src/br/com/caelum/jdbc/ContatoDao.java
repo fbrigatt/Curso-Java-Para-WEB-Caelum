@@ -2,6 +2,7 @@ package br.com.caelum.jdbc;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ContatoDao {
 	}
 
 	// Armazena em uma lista todos os contatos salvos no Banco de Dados
-	public List getLista() {
+	public List<Contato> getLista() {
 		String sql = "SELECT * FROM contatos";
 		List<Contato> contatos = new ArrayList<Contato>();
 		try {
@@ -63,6 +64,38 @@ public class ContatoDao {
 			conn.close();
 
 			return contatos;
+		} catch (SQLException e) {
+			throw new RuntimeException();
+		}
+	}
+
+	public void alteraContato(Contato contato) {
+		String sql = "UPDATE contatos SET nome = ?, email = ?, endereco = ?, dataNascimento = ? WHERE id = ?";
+
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, contato.getNome());
+			stmt.setString(2, contato.getEmail());
+			stmt.setString(3, contato.getEndereco());
+			stmt.setDate(4, new Date(contato.getDataNascimento().getTimeInMillis()));
+			stmt.setLong(5, contato.getId());
+
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException();
+		}
+	}
+
+	public void removeContato(Contato contato) {
+		String sql = "DELETE FROM contatos WHERE id = ?";
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setLong(1, contato.getId());
+
+			stmt.execute();
+			stmt.close();
 		} catch (SQLException e) {
 			throw new RuntimeException();
 		}
