@@ -1,6 +1,12 @@
 package br.com.caelum.jdbc;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class ContatoDao {
 	Connection conn = null;
@@ -25,6 +31,40 @@ public class ContatoDao {
 			stmt.close();
 		} catch (SQLException e) {
 			System.out.println(e);
+		}
+	}
+
+	// Armazena em uma lista todos os contatos salvos no Banco de Dados
+	public List getLista() {
+		String sql = "SELECT * FROM contatos";
+		List<Contato> contatos = new ArrayList<Contato>();
+		try {
+			java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Contato novoContato = new Contato();
+
+				novoContato.setId(rs.getLong("id"));
+				novoContato.setNome(rs.getString("nome"));
+				novoContato.setEmail(rs.getString("email"));
+				novoContato.setEndereco(rs.getString("endereco"));
+
+				Calendar dataNascimento = Calendar.getInstance();
+				dataNascimento.setTime(rs.getDate("dataNascimento"));
+				novoContato.setDataNascimento(dataNascimento);
+
+				contatos.add(novoContato);
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+			return contatos;
+		} catch (SQLException e) {
+			throw new RuntimeException();
 		}
 	}
 }
