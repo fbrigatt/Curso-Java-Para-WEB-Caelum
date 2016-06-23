@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.caelum.contato.Contato;
+import br.com.caelum.contato.ContatoDAO;
+
 @SuppressWarnings("serial")
-public class OiMundo extends HttpServlet {
-	
+public class ConsultaContatoServlet extends HttpServlet {
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -25,21 +28,23 @@ public class OiMundo extends HttpServlet {
 	}
 
 	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 
 		PrintWriter out = response.getWriter();
 
+		Contato contato = null;
+		ContatoDAO dao = new ContatoDAO();
+
+		contato = dao.buscarContatoPorNome(request.getParameter("nome"));
+
 		out.println("<html>");
-		out.println("<title>");
-		out.println("Primeira Servlet");
-		out.println("</title>");
 		out.println("<body>");
-		out.println("<h1> Olá mundo Servlet </h1>");
+		out.println("<br>Nome: " + contato.getNome());
+		out.println("<br>Email: " + contato.getEmail());
+		out.println("<br>Endereco: " + contato.getEndereco());
 		out.println("</body>");
 		out.println("</html>");
-
 	}
 
 }

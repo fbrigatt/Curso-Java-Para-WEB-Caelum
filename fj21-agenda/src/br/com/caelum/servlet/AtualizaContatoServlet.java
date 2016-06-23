@@ -2,6 +2,7 @@ package br.com.caelum.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,8 +17,8 @@ import br.com.caelum.contato.Contato;
 import br.com.caelum.contato.ContatoDAO;
 
 @SuppressWarnings("serial")
-public class AdicionaContatoServlet extends HttpServlet {
-
+public class AtualizaContatoServlet extends HttpServlet {
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -29,44 +30,43 @@ public class AdicionaContatoServlet extends HttpServlet {
 		super.destroy();
 		log("Desligando a Servlet");
 	}
-
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response)
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
 
+		long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
 		String endereco = request.getParameter("endereco");
 		String dataEmTexto = request.getParameter("dataNascimento");
-		Calendar dataDeNascimento = null;
+
+		Calendar dataNascimento = null;
 
 		try {
-			Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dataEmTexto);
-			dataDeNascimento = Calendar.getInstance();
-			dataDeNascimento.setTime(date);
-		} catch (java.text.ParseException e) {
-			out.println("Erro de conversão de data");
-			return;
+			Date data = new SimpleDateFormat("dd/MM/yyyy").parse(dataEmTexto);
+			dataNascimento = Calendar.getInstance();
+			dataNascimento.setTime(data);
+		} catch (ParseException e) {
+			out.println("Erro na conversão da Data");
 		}
 
-		// Monta objeto Contato
-		Contato c1 = new Contato();
-		c1.setNome(nome);
-		c1.setEmail(email);
-		c1.setEndereco(endereco);
-		c1.setDataDeNascimento(dataDeNascimento);
-
-		// Salva o contato
+		Contato contatoAlterado = new Contato();
 		ContatoDAO dao = new ContatoDAO();
-		dao.adicionarContato(c1);
+
+		contatoAlterado.setId(id);
+		contatoAlterado.setNome(nome);
+		contatoAlterado.setEmail(email);
+		contatoAlterado.setEndereco(endereco);
+		contatoAlterado.setDataDeNascimento(dataNascimento);
+
+		dao.atualizaContato(contatoAlterado);
 
 		out.println("<html>");
 		out.println("<body>");
-		out.println("Contato: " + c1.getNome() + " adicionado com sucesso");
+		out.println("Contato Alterado com Sucesso!");
 		out.println("</body>");
 		out.println("</html>");
 	}
-
 }
