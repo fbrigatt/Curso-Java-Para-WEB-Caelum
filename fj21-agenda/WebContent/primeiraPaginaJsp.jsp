@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<jsp:useBean id="contato1" class="br.com.caelum.contato.Contato"></jsp:useBean>
 	<%-- Primeira página JSP --%>
 	<%
 		String mensagem = "Bem Vindo!";

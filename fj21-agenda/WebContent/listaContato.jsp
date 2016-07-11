@@ -10,7 +10,7 @@
 <body>
 	<%
 		ContatoDAO dao = new ContatoDAO();
-		List<Contato> contatos = dao.listaDeContatos();
+		List<Contato> contatos = dao.getContatos();
 
 		for (Contato contato : contatos) {
 			

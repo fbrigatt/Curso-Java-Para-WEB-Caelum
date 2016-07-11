@@ -5,11 +5,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ContatoDAO {
 	Connection conn = null;
+	private List<Contato> contatos = new ArrayList<Contato>();
 
 	public ContatoDAO() {
 		conn = new ConnectionFactory().getConnection();
@@ -97,9 +101,8 @@ public class ContatoDAO {
 	}
 
 	// RETORNAR TODOS OS CONTATOS EM UMA LIST
-	public List<Contato> listaDeContatos() {
+	public List<Contato> getContatos() {
 		String sql = "SELECT * FROM contatos";
-		List<Contato> contatos = new ArrayList<Contato>();
 
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -109,17 +112,24 @@ public class ContatoDAO {
 			while (rs.next()) {
 				Contato contatoNovo = new Contato();
 
+				contatoNovo.setId(rs.getLong("id"));
 				contatoNovo.setNome(rs.getString("nome"));
 				contatoNovo.setEmail(rs.getString("email"));
 				contatoNovo.setEndereco(rs.getString("endereco"));
 
-				contatos.add(contatoNovo);
+				if (rs.getDate("dataNascimento") != null) {
+					Calendar dataNascimento = Calendar.getInstance();
+					dataNascimento.setTime(rs.getDate("dataNascimento"));
+					contatoNovo.setDataDeNascimento(dataNascimento);
+				}
+
+				this.contatos.add(contatoNovo);
 			}
 
 			stmt.close();
 			rs.close();
 
-			return contatos;
+			return this.contatos;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

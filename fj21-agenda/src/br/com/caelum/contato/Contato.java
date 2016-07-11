@@ -48,4 +48,10 @@ public class Contato {
 	public void setDataDeNascimento(Calendar dataDeNascimento) {
 		this.dataDeNascimento = dataDeNascimento;
 	}
+
+	@Override
+	public String toString() {
+		return "ID: " + this.id + "\nNome: " + this.nome + "\nEmail: " + this.email + "\nEndereco: " + this.endereco
+				+ "\nData de Nascimento: " + this.dataDeNascimento;
+	}
 }
