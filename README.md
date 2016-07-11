@@ -12,3 +12,5 @@ Capitulo 4 = Novo projeto WEB usando Eclipse
 Capitulo 5 = Servlets
 
 Capitulo 6 = JSP (JavaServer Pages)
+
+Capitulo 7 = Usando Taglibs
