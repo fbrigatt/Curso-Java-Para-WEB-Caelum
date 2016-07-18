@@ -2,21 +2,31 @@ package br.com.caelum.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.caelum.contato.ConnectionFactory;
 import br.com.caelum.contato.Contato;
 import br.com.caelum.contato.ContatoDAO;
 
 @SuppressWarnings("serial")
-public class AdicionaContatoServlet extends HttpServlet {
+public class AdicionaContatoServlet extends HttpServlet implements IServlet {
+
+	@Override
+	public String executa(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		return null;
+	}
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -59,14 +69,17 @@ public class AdicionaContatoServlet extends HttpServlet {
 		c1.setDataDeNascimento(dataDeNascimento);
 
 		// Salva o contato
-		ContatoDAO dao = new ContatoDAO();
-		dao.adicionarContato(c1);
+		try {
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
+			dao.adicionarContato(c1);
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 
-		out.println("<html>");
-		out.println("<body>");
-		out.println("Contato: " + c1.getNome() + " adicionado com sucesso");
-		out.println("</body>");
-		out.println("</html>");
+		RequestDispatcher rd = request.getRequestDispatcher("contato-adicionado.jsp");
+		rd.forward(request, response);
 	}
 
 }

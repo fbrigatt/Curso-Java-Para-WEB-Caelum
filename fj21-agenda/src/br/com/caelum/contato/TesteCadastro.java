@@ -1,42 +1,80 @@
 package br.com.caelum.contato;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 
 public class TesteCadastro {
 
 	public static void main(String[] args) {
-		testListaDeContatos();
+		testBuscaPorID();
 	}
 
 	public static void testCadastrar() {
-		Contato contato = new Contato();
-		ContatoDAO dao = new ContatoDAO();
+		try {
+			Contato contato = new Contato();
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
 
-		contato.setNome("José");
-		contato.setEmail("jose@gmail.com");
-		contato.setEndereco("25 de marco");
-		contato.setDataDeNascimento(Calendar.getInstance());
+			contato.setNome("José");
+			contato.setEmail("jose@gmail.com");
+			contato.setEndereco("25 de marco");
+			contato.setDataDeNascimento(Calendar.getInstance());
 
-		dao.adicionarContato(contato);
+			dao.adicionarContato(contato);
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void buscarContatoPorNome() {
-		ContatoDAO dao = new ContatoDAO();
+		try {
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
 
-		Contato contatoEncontrado = dao.buscarContatoPorNome("Daniel");
+			Contato contatoEncontrado = dao.buscarContatoPorNome("Daniel");
 
-		System.out.println(contatoEncontrado);
+			System.out.println(contatoEncontrado);
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void testListaDeContatos() {
-		ContatoDAO dao = new ContatoDAO();
+		List<Contato> contatos;
+		try {
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
 
-		List<Contato> contatos = dao.getContatos();
+			contatos = dao.getContatos();
+
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 
 		for (Contato contato : contatos) {
 			System.out.println(contato + "\n");
 		}
+	}
+
+	public static void testBuscaPorID() {
+		Contato contatoEncontrado;
+		try {
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
+			contatoEncontrado = new Contato();
+
+			contatoEncontrado = dao.buscaContatoPorID(5);
+
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		System.out.println(contatoEncontrado);
 	}
 
 }

@@ -2,6 +2,8 @@ package br.com.caelum.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.caelum.contato.ConnectionFactory;
 import br.com.caelum.contato.Contato;
 import br.com.caelum.contato.ContatoDAO;
 
@@ -32,11 +35,17 @@ public class ConsultaContatoServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
-
 		Contato contato = null;
-		ContatoDAO dao = new ContatoDAO();
 
-		contato = dao.buscarContatoPorNome(request.getParameter("nome"));
+		try {
+			Connection conn = new ConnectionFactory().getConnection();
+			ContatoDAO dao = new ContatoDAO(conn);
+
+			contato = dao.buscarContatoPorNome(request.getParameter("nome"));
+			conn.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 
 		out.println("<html>");
 		out.println("<body>");

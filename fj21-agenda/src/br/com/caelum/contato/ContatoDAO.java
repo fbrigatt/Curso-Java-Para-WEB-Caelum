@@ -5,18 +5,16 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class ContatoDAO {
-	Connection conn = null;
+	private Connection conn = null;
 	private List<Contato> contatos = new ArrayList<Contato>();
 
-	public ContatoDAO() {
-		conn = new ConnectionFactory().getConnection();
+	public ContatoDAO(Connection conn) {
+		this.conn = conn;
 	}
 
 	// ADICIONA NOVO CONTATO
@@ -85,13 +83,13 @@ public class ContatoDAO {
 	}
 
 	// DELETA UM CONTATO
-	public void deletaContato(long id) {
+	public void deletaContato(Contato contato) {
 		String sql = "DELETE FROM contatos WHERE id = ?";
 
 		try {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
-			stmt.setLong(1, id);
+			stmt.setLong(1, contato.getId());
 
 			stmt.execute();
 			stmt.close();
@@ -130,6 +128,36 @@ public class ContatoDAO {
 			rs.close();
 
 			return this.contatos;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// BUSCA CONTATO POR ID
+	public Contato buscaContatoPorID(long id) {
+		String sql = "SELECT * FROM contatos WHERE id = ?";
+
+		try {
+			PreparedStatement ptmt = conn.prepareStatement(sql);
+			ptmt.setLong(1, id);
+
+			ResultSet rs = ptmt.executeQuery();
+
+			rs.next();
+
+			Contato contatoEncontrado = new Contato();
+			contatoEncontrado.setId(id);
+			contatoEncontrado.setNome(rs.getString("nome"));
+			contatoEncontrado.setEmail(rs.getString("email"));
+			contatoEncontrado.setEndereco(rs.getString("endereco"));
+
+			Calendar dataNascimento = Calendar.getInstance();
+			dataNascimento.setTime(rs.getDate("dataNascimento"));
+			contatoEncontrado.setDataDeNascimento(dataNascimento);
+
+			ptmt.close();
+			rs.close();
+			return contatoEncontrado;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

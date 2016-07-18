@@ -1,71 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	id="WebApp_ID" version="3.0">
-	<display-name>fj21-agenda</display-name>
-
-	<servlet>
-		<servlet-name>deletarContato</servlet-name>
-		<servlet-class>br.com.caelum.servlet.DeletaContatoServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>deletarContato</servlet-name>
-		<url-pattern>/deletarContato</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>atualizarContato</servlet-name>
-		<servlet-class>br.com.caelum.servlet.AtualizaContatoServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>atualizarContato</servlet-name>
-		<url-pattern>/atualizarContato</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>consultaContato</servlet-name>
-		<servlet-class>br.com.caelum.servlet.ConsultaContatoServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>consultaContato</servlet-name>
-		<url-pattern>/consultaContato</url-pattern>
-	</servlet-mapping>
-
-
-	<servlet>
-		<servlet-name>adicionaContato</servlet-name>
-		<servlet-class>br.com.caelum.servlet.AdicionaContatoServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>adicionaContato</servlet-name>
-		<url-pattern>/adicionaContato</url-pattern>
-	</servlet-mapping>
-
-
-	<servlet>
-		<servlet-name>primeiraServlet</servlet-name>
-		<servlet-class>br.com.caelum.servlet.OiMundo</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>primeiraServlet</servlet-name>
-		<url-pattern>/oi</url-pattern>
-	</servlet-mapping>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/404.html</location>
-	</error-page>
-	
-	
-
-	<welcome-file-list>
-		<welcome-file>listar-com-jstl.jsp</welcome-file>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>fj21-agenda</display-name>
+  <servlet>
+    <servlet-name>deletarContato</servlet-name>
+    <servlet-class>br.com.caelum.servlet.DeletaContatoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deletarContato</servlet-name>
+    <url-pattern>/deletarContato</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>atualizarContato</servlet-name>
+    <servlet-class>br.com.caelum.servlet.AtualizaContatoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>atualizarContato</servlet-name>
+    <url-pattern>/atualizarContato</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>consultaContato</servlet-name>
+    <servlet-class>br.com.caelum.servlet.ConsultaContatoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>consultaContato</servlet-name>
+    <url-pattern>/consultaContato</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>adicionaContato</servlet-name>
+    <servlet-class>br.com.caelum.servlet.AdicionaContatoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>adicionaContato</servlet-name>
+    <url-pattern>/adicionaContato</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>primeiraServlet</servlet-name>
+    <servlet-class>br.com.caelum.servlet.OiMundo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>primeiraServlet</servlet-name>
+    <url-pattern>/oi</url-pattern>
+  </servlet-mapping>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/404.html</location>
+  </error-page>
+  <welcome-file-list>
+    <welcome-file>listar-com-jstl.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>
